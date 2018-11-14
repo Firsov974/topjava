@@ -24,6 +24,9 @@ public class MemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal){
+        if (meal.isNew()){
+            meal.setId(counter.incrementAndGet());
+        }
         return repository.put(meal.getId(), meal);
     }
 
