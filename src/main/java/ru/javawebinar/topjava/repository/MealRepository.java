@@ -2,14 +2,20 @@ package ru.javawebinar.topjava.repository;
 
 import ru.javawebinar.topjava.model.Meal;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface MealRepository {
-    Meal save(Meal meal);
+    Meal save(Meal meal, int userId);
 
-    void delete(int id);
+    // false если еда чужая
+    boolean delete(int id, int userId);
 
-    Meal get(int id);
+    // null если еда чужая
+    Meal get(int id, int userId);
 
-    Collection<Meal> getAll();
+    Collection<Meal> getAll(int userId);
+
+    Collection<Meal> getBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int userId);
+
 }
