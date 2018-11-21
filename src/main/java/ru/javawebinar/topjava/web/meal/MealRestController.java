@@ -31,10 +31,10 @@ public class MealRestController {
         this.service = service;
     }
 
-    public Collection<Meal> getAll() {
+    public Collection<MealWithExceed> getAll() {
         int userId = SecurityUtil.authUserId();
         log.info("getAll for user", userId);
-        return service.getAll(userId);
+         return MealsUtil.getWithExceeded(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
     }
 
     public Meal get(int id) {
