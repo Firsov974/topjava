@@ -19,13 +19,13 @@ public interface MealService {
 
     void update(Meal meal, int userId);
 
-    Collection<Meal> getAll(int userId);
+    List<Meal> getAll(int userId);
 
-    default Collection<Meal> getBetweenDates(LocalDate startDate, LocalDate endDate, int userId) {
+    default List<Meal> getBetweenDates(LocalDate startDate, LocalDate endDate, int userId) {
         return getBetweenDateTimes(LocalDateTime.of(startDate, LocalTime.MIN), LocalDateTime.of(endDate, LocalTime.MAX), userId);
     }
 
-    Collection<Meal> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
+    List<Meal> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
 
 
 }

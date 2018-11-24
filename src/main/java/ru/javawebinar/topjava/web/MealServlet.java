@@ -16,9 +16,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
@@ -43,18 +48,31 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        Meal meal = new Meal(
+        String action = request.getParameter("action");
+        switch (action == null ? "all" : action) {
+           case "filter":
+               LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
+               LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
+               LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
+               LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
+               request.setAttribute("meals",mealRestController.getBetweenDates(startDate, startTime, endDate, endTime));
+               request.getRequestDispatcher("/meals.jsp").forward(request, response);
+               break;
+           case "all":
+           default:
+             Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
-        log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
+             log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
 
-        if(request.getParameter("id").isEmpty())
-            mealRestController.create(meal);
-        else
-            mealRestController.update(meal, getId(request));
-        response.sendRedirect("meals");
+             if(request.getParameter("id").isEmpty())
+                mealRestController.create(meal);
+             else
+                mealRestController.update(meal, getId(request));
+             response.sendRedirect("meals");
+        }
     }
 
     @Override

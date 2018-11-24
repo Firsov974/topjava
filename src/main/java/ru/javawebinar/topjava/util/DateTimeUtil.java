@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.util;
 
+import org.springframework.util.StringUtils;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,15 +13,20 @@ public class DateTimeUtil {
     public static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
     public static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
 
-    public static boolean isBetween(LocalTime lt, LocalTime startTime, LocalTime endTime) {
-        return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) <= 0;
-    }
-
-    public static boolean isBetween(LocalDateTime value, LocalDateTime start, LocalDateTime end) {
+    public static <T extends Comparable<? super T>> boolean isBetween(T value, T start, T end) {
         return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
     }
 
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
+
+    public static LocalDate parseLocalDate(String strDate){
+        return StringUtils.isEmpty(strDate) ? null : LocalDate.parse(strDate);
+    }
+
+    public static LocalTime parseLocalTime(String strTime){
+        return StringUtils.isEmpty(strTime) ? null : LocalTime.parse(strTime);
+    }
+
 }
