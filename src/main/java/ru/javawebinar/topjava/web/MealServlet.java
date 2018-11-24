@@ -72,6 +72,7 @@ public class MealServlet extends HttpServlet {
              else
                 mealRestController.update(meal, getId(request));
              response.sendRedirect("meals");
+             break;
         }
     }
 
