@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -65,9 +66,9 @@ public class JdbcMealRepositoryImpl implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE id=? AND user_id=?", ROW_MAPPER, id, userId);
-        return DataAccessUtils.singleResult(meals);
-
+        List<Meal> meals = jdbcTemplate.query(
+                "SELECT * FROM meals WHERE id=? AND user_id=?", ROW_MAPPER, id, userId);
+        return CollectionUtils.isEmpty(meals) ? null : DataAccessUtils.singleResult(meals);
     }
 
     @Override

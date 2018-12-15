@@ -63,7 +63,7 @@ public class JdbcMealRepositoryImplTest {
     public void getBetween() {
         assertMatch(repository.getBetween(
                 LocalDateTime.of(2015, Month.MAY, 30, 0, 0),
-                LocalDateTime.of(2015, Month.MAY, 30, 24, 0),
+                LocalDateTime.of(2015, Month.MAY, 30, 23, 59),
                 USER_ID), MEAL3, MEAL2, MEAL1);
     }
 }
