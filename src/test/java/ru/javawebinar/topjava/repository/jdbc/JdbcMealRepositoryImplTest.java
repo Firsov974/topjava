@@ -24,6 +24,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
+        "classpath:spring/spring-app-web.xml",
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringRunner.class)

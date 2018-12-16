@@ -20,9 +20,11 @@ import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 import static ru.javawebinar.topjava.MealTestData.assertMatch;
+import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
+        "classpath:spring/spring-app-web.xml",
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -58,8 +60,13 @@ public class MealServiceTest {
     }
 
     @Test(expected = NotFoundException.class)
+    public void deletedNotFound() throws Exception {
+        service.delete(ADMIN_ID, USER_ID);
+    }
+
+    @Test(expected = NotFoundException.class)
     public void getNotFound() throws Exception {
-        service.get(1, ADMIN_ID);
+        service.get(MEAL_ID, ADMIN_ID);
     }
 
     @Test
@@ -83,4 +90,9 @@ public class MealServiceTest {
         assertMatch(service.getAll(USER_ID), MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, updated);
     }
 
+    @Test(expected = NotFoundException.class)
+    public void testNotFoundUpdate() throws Exception {
+        Meal updated = service.get(MEAL_ID, START_SEQ);
+        service.update(updated, START_SEQ+1);
+    }
 }
