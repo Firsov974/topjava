@@ -42,7 +42,8 @@ public class MealServiceTest {
     @Test
     public void create() throws Exception {
         Meal created = getCreated();
-        service.create(created, USER_ID);
+        Meal meal = service.create(created, USER_ID);
+        assertMatch(meal,created);
         assertMatch(service.getAll(USER_ID), created, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
     }
 

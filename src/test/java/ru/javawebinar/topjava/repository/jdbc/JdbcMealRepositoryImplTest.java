@@ -36,7 +36,8 @@ public class JdbcMealRepositoryImplTest {
     @Test
     public void save() {
         Meal created = getCreated();
-        repository.save(created, USER_ID);
+        Meal meal = repository.save(created, USER_ID);
+        assertMatch(meal, created);
         assertMatch(repository.getAll(USER_ID), created, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
     }
 
