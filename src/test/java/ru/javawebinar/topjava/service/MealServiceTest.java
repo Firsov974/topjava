@@ -23,7 +23,6 @@ import static ru.javawebinar.topjava.MealTestData.assertMatch;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 @ContextConfiguration({
-        "classpath:spring/spring-app.xml",
         "classpath:spring/spring-app-web.xml",
         "classpath:spring/spring-db.xml"
 })
@@ -93,6 +92,6 @@ public class MealServiceTest {
     @Test(expected = NotFoundException.class)
     public void testNotFoundUpdate() throws Exception {
         Meal updated = service.get(MEAL_ID, START_SEQ);
-        service.update(updated, START_SEQ+1);
+        service.update(updated, START_SEQ + 1);
     }
 }
