@@ -8,8 +8,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.Util;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +26,8 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         Objects.requireNonNull(meal, "meal must not be null");
-        Map<Integer, Meal> meals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+//        Map<Integer, Meal> meals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        var meals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             meals.put(meal.getId(), meal);
@@ -37,25 +36,17 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         return meals.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
-    @PostConstruct
-    public void postConstruct() {
-        log.info("+++ PostConstruct");
-    }
-
-    @PreDestroy
-    public void preDestroy() {
-        log.info("+++ PreDestroy");
-    }
-
     @Override
     public boolean delete(int id, int userId) {
-        Map<Integer, Meal> meals = repository.get(userId);
+//        Map<Integer, Meal> meals = repository.get(userId);
+        var meals = repository.get(userId);
         return meals != null && meals.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        Map<Integer, Meal> meals = repository.get(userId);
+//        Map<Integer, Meal> meals = repository.get(userId);
+        var meals = repository.get(userId);
         return meals == null ? null : meals.get(id);
     }
 
@@ -73,6 +64,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     private List<Meal> getAllFiltered(int userId, Predicate<Meal> filter) {
         Map<Integer, Meal> meals = repository.get(userId);
+//        var meals = repository.get(userId);
         return CollectionUtils.isEmpty(meals) ? Collections.emptyList() :
                 meals.values().stream()
                         .filter(filter)
